@@ -2,12 +2,12 @@ from random import randint
 import exceptions
 
 def print_deck(deck):
-	print("current deck situation:")
+	print("Current deck situation:")
 	for row in deck:
 		print(row)
 
 def print_players(players):
-	print("players situation:")
+	print("Players situation:")
 	for num, cards in players.items():
 		print(f"Player {num}: {cards}")
 
@@ -56,7 +56,7 @@ def distribute_cards(num_of_players, cards):
 			cards.pop(index)
 			largest_index -= 1
 			players[j].append(curr_card)
-	print("sanity check for number of cards returned:", len(cards) == 104 - num_of_players * 10) # sanity check
+	# print("sanity check for number of cards returned:", len(cards) == 104 - num_of_players * 10) # sanity check
 	return [players, cards]
 
 def find_largest_cards_in_row(row):
@@ -92,7 +92,7 @@ def set_up_decks(cards, deck):
 	# print(deck)
 	return [deck, cards]
 
-def place_card(player, card, deck):
+def place_card(players, player, card, deck):
 	# places current player's card to the deck
 	NUM_OF_ROWS = 4
 	NUM_OF_COLS = 5
@@ -107,15 +107,20 @@ def place_card(player, card, deck):
 	smallest_card = find_largest_cards_in_row(row)
 
 	# if card is smallest than any of the rows
-	print("card is smallest", is_larger_card(smallest_card, card))
+	# print("card is smallest", is_larger_card(smallest_card, card))
 	if is_larger_card(smallest_card, card):
-		print("here")
+		# print("here")
 		# choose a row to take all cards
-		# row_index = input("You've chosen a card that is smaller than any of the cards in the row. Please choose a row number (1 to 4) to take all cards in the row: ")
-		row_index = 1
-		row_index = int(row_index)
+		
+		if player == 1: # yourself
+			row_index = input("You've chosen a card that is smaller than any of the cards in the row. Please choose a row number (1 to 4) to take all cards in the row: ")
+			row_index = int(row_index)
+		
+		else:
+			row_index = 1
+			
 		if row_index < 1 or row_index > NUM_OF_ROWS:
-			raise InvalidRowNumberException()
+			row_index = input("The row number you inputted is not valid. Please enter a number between 1 to 4: ")
 		row_index -= 1
 		row = deck[row_index]
 		for c in row:
@@ -144,7 +149,7 @@ def place_card(player, card, deck):
 			# find current last card in row
 			curr_small_card = curr_row[0]
 			curr_large_card = next_row[0]
-			print("initial large card:", curr_large_card, "initial small card:", curr_small_card)
+			# print("initial large card:", curr_large_card, "initial small card:", curr_small_card)
 			for j in range(NUM_OF_COLS - 1, 1, -1):
 				curr_card = curr_row[j]
 				next_card = next_row[j]
@@ -153,32 +158,31 @@ def place_card(player, card, deck):
 				if next_card == empty_card and next_row[j - 1] != empty_card:
 					curr_large_card = next_row[j - 1]
 
-			print("large card:", curr_large_card, "small card:", curr_small_card)
+			# print("large card:", curr_large_card, "small card:", curr_small_card)
 			if is_larger_card(card, curr_small_card) and is_larger_card(curr_large_card, card):
 				# this is the current row
-				print("here jusseyo")
+				# print("here jusseyo")
 				row = curr_row
 				row_index = i
-				print("card is between large and small card:", True)
+				# print("card is between large and small card:", True)
 				break
 
 			# largest card case
 			elif is_larger_card(card, curr_large_card):
-				print("here!")
+				# print("here!")
 				row = next_row
 				row_index = i + 1
-				print("card is largest:", True)
+				# print("card is largest:", True)
 
-		print("current row situation: ", row)
+		# print("current row situation: ", row)
 		row = place_single_card(row, card)
-		print("row after placed: ", row)
+		# print("row after placed: ", row)
 		deck[row_index] = row
 
 	# don't forget to remove current card from player's hand
 	curr_card_index = players[player].index(card)
 	players[player].pop(curr_card_index)
 	return [players, deck]
-
 
 def make_new_row(first_card):
 	empty_card = [0, 0]
@@ -187,7 +191,7 @@ def make_new_row(first_card):
 def place_single_card(row, card):
 	empty_card = [0, 0]
 	for i, c in enumerate(row):
-		print("card index in row:", i, "card:", c)
+		# print("card index in row:", i, "card:", c)
 		if c == empty_card:
 			row[i] = card
 			break
@@ -201,78 +205,168 @@ def is_row_full(row):
 def is_larger_card(curr_card, compared_card):
 	return curr_card[0] > compared_card[0]
 
-# random simulation
-# cards = []
-# deck = []
-# cards = set_up_cards(cards)
-# # print(cards)
-# players, cards = distribute_cards(4, cards)
-# # print(players)
-# deck, cards = set_up_decks(cards, deck)
-# print_deck(deck)
-# print('---')
-# print_players(players)
-# print('---')
-# # print(cards)
-# for t in range(5): # reduce to 5 rows
-# 	cards_to_place = []
-# 	for i in range(4):
-# 		print(f"Player {i + 1}'s turn")
-# 		cards = players[i+1]
-# 		# print(cards)
-# 		# brute force algo, selecting kartu paling parah
-# 		cards.sort(key = lambda x:x[0])
-# 		cards.sort(key = lambda x:x[1], reverse = True)
-# 		# print("sorted card:", cards)
-# 		card = cards[0]
-# 		print("chosen card:", card)
-# 		# card = input("Please type the card that you would like to place: ")
-# 		cards_to_place.append((card, i))
-# 	cards_to_place.sort(key = lambda x: x[0][0])
-# 	for c, p in cards_to_place:
-# 		players, deck = place_card(p + 1, c, deck)
-# 		print('---')
-# 		print_deck(deck)	
-# 	print('---')
-# 	print("end of turn")
-# 	print_deck(deck)
-# print('===')
-# print("final deck condition:")
-# print_deck(deck)
-# print("---")
-# print("final players condition:")
-# print_players(players)
+def determine_winners(players):
+	current_winner = None
+	winning_penalty = 0
+	for p, cards in players.items():
+		current_player = p
+		current_penalty = 0
+		for c in cards:
+			current_penalty += c[1]
+		if winning_penalty > current_penalty:
+			winning_penalty = current_penalty
+			current_winner = p
+	return f'The winner is Player {current_winner}! Congratulations.'
 
-# print(find_largest_cards_in_row([[1,1],[2,2],[3,3],[0,0],[0,0]])) # sanity check, should be [3,3]
+def check_card_in_hand(card, current_deck):
+	return card in current_deck
 
-players = {1: [[28, 1], [61, 1], [81, 1], [34, 1], [24, 1], [22, 5], [10, 3], [91, 1], [18, 1], [17, 1]], 2: [[49, 1], [45, 2], [25, 2], [84, 1], [98, 1], [16, 1], [62, 1], [85, 2], [23, 1], [52, 1]], 3: [[70, 3], [100, 3], [87, 1], [48, 1], [19, 1], [89, 1], [59, 1], [104, 1], [64, 1], [46, 1]], 4: [[11, 5], [63, 1], [4, 1], [37, 1], [88, 5], [76, 1], [77, 5], [8, 1], [20, 3], [95, 2]]}
-deck = [[[6, 1], [0, 0], [0, 0], [0, 0], [0, 0]], [[36, 1], [0, 0], [0, 0], [0, 0], [0, 0]], [[66, 5], [0, 0], [0, 0], [0, 0], [0, 0]], [[86, 1], [0, 0], [0, 0], [0, 0], [0, 0]]]
+def play_game():
+	try:
+		print("Welcome to 6nimmts!") 
+		mode = input("Which difficulty would you like to play? Please enter Easy or Normal: ")
+		if (mode == "Debug"):
+			simulate_debug()
+		else:
+			simulate(mode)
+	except KeyboardInterrupt:
+		print("Bye!")
+		exit()
 
-for t in range(2): # reduce to 5 rows
-	cards_to_place = []
-	for i in range(4):
-		print(f"Player {i + 1}'s turn")
-		cards = players[i+1]
-		# print(cards)
-		# brute force algo, selecting kartu paling parah
-		cards.sort(key = lambda x:x[0])
-		cards.sort(key = lambda x:x[1], reverse = True)
-		# print("sorted card:", cards)
-		card = cards[0]
-		print("chosen card:", card)
-		# card = input("Please type the card that you would like to place: ")
-		cards_to_place.append((card, i))
-	cards_to_place.sort(key = lambda x: x[0][0])
-	for c, p in cards_to_place:
-		players, deck = place_card(p + 1, c, deck)
-		print('---')
-		print_deck(deck)	
-	print('---')
-	print("end of turn")
+def simulate_debug():
+	cards = []
+	# modify your card here
+	deck = [[[13, 1], [0, 0], [0, 0], [0, 0], [0, 0]],
+		[[14, 1], [0, 0], [0, 0], [0, 0], [0, 0]],
+		[[23, 1], [0, 0], [0, 0], [0, 0], [0, 0]],
+		[[87, 1], [0, 0], [0, 0], [0, 0], [0, 0]]]
+	cards = set_up_cards(cards)
+	players, cards = distribute_cards(4, cards)
+	# modify your own cards
+	players[1] = [[57, 1], [32, 1], [91, 1], [40, 3], [26, 1], [70, 3], [76, 1], [93, 1], [67, 1], [81, 1]]
+	# deck, cards = set_up_decks(cards, deck)
+	# initial deck condition
 	print_deck(deck)
-print('===')
-print("final deck condition:")
-print_deck(deck)
-print("---")
-print("final players condition:")
-print_players(players)
+	# initial player condition
+	print_players(players)
+
+	# 3 turns
+	for t in range(3):
+		print("Here are your cards:", players[1])
+		cards_to_place = []
+		for i in range(4):
+			if i == 0:
+				print("Your turn")
+			else:
+				print(f"Player {i + 1}'s turn")
+			cards = players[i+1]
+			# if player is yourself
+			if (i == 0):	
+				print("Please type the card that you would like to place")
+				card = input("(Type in format, [<number>, <cattle>]): ")
+				try:
+					check_card_in_hand(card, cards)
+				except CardNotInHandException:
+					card = input("Error: The card you inputted is not in your hand! Please retype the card that you would like to place: ")
+			# brute force algo, selecting kartu paling parah
+			else: # bot
+				cards.sort(key = lambda x:x[0])
+				cards.sort(key = lambda x:x[1], reverse = True)
+				card = cards[0]
+			print("chosen card:", card)
+			if type(card) == str:
+				# print("hell yeah.")
+				card = card[1:len(card) - 1]
+				card = card.split(',')
+				card = [int(card[0]), int(card[1])]
+				# print(card)
+			cards_to_place.append((card, i))
+		cards_to_place.sort(key = lambda x: x[0][0])
+		for c, p in cards_to_place:
+			players, deck = place_card(players, p + 1, c, deck)
+			print('---')
+			print_deck(deck)	
+		print('---')
+		print("end of turn")
+		print_deck(deck)
+	print('===')
+	print("final deck condition:")
+	print_deck(deck)
+	print("---")
+	print("final players condition:")
+	print_players(players)
+	print("calculating winner...")
+	print(determine_winners(players))
+
+def simulate(difficulty):
+	if difficulty not in ['Easy', 'Normal']:
+		difficulty = input("The difficulty you've entered is invalid! Please either enter Easy or Normal: ")
+
+	cards = []
+	deck = []
+	cards = set_up_cards(cards)
+	players, cards = distribute_cards(4, cards)
+	deck, cards = set_up_decks(cards, deck)
+	# initial deck condition
+	print_deck(deck)
+	# initial player condition
+	# print_players(players)
+
+	# 10 turns
+	for t in range(10):
+		print("Here are your cards:", players[1])
+		cards_to_place = []
+		for i in range(4):
+			if i == 0:
+				print("Your turn")
+			else:
+				print(f"Player {i + 1}'s turn")
+			cards = players[i+1]
+			# if player is yourself
+			if (i == 0):	
+				print("Please type the card that you would like to place")
+				card = input("(Type in format, [<number>, <cattle>]): ")
+				try:
+					check_card_in_hand(card, cards)
+				except CardNotInHandException:
+					card = input("Error: The card you inputted is not in your hand! Please retype the card that you would like to place: ")
+			# brute force algo, selecting kartu paling parah
+			else: # bot
+				if (difficulty == 'Easy'):
+					card = cards[randint(0, len(cards) - 1)]
+				else: # normal difficulty
+					cards.sort(key = lambda x:x[0])
+					cards.sort(key = lambda x:x[1], reverse = True)
+					card = cards[0]
+			print("chosen card:", card)
+			if type(card) == str:
+				# print("hell yeah.")
+				card = card[1:len(card) - 1]
+				card = card.split(',')
+				card = [int(card[0]), int(card[1])]
+				# print(card)
+			cards_to_place.append((card, i))
+		cards_to_place.sort(key = lambda x: x[0][0])
+		for c, p in cards_to_place:
+			players, deck = place_card(players, p + 1, c, deck)
+			print('---')
+			print_deck(deck)	
+		print('---')
+		print("end of turn")
+		print_deck(deck)
+	print('===')
+	print("final deck condition:")
+	print_deck(deck)
+	print("---")
+	# print("final players condition:")
+	# print_players(players)
+	print("calculating winner...")
+	print(determine_winners(players))
+	play_again = input("Would you like to play again? Type Yes or No: ")
+	if play_again == "Yes":
+		difficulty = input("Which difficulty you would like to play? Type Easy or Normal: ")
+		simulate(difficulty)
+	else:
+		print("Thanks for playing! Hope to see you again.")
+
+play_game()
