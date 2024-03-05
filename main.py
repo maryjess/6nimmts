@@ -59,6 +59,17 @@ def distribute_cards(num_of_players, cards):
 	print("sanity check for number of cards returned:", len(cards) == 104 - num_of_players * 10) # sanity check
 	return [players, cards]
 
+def find_largest_cards_in_row(row):
+	NUM_OF_COLS = 5
+	empty_card = [0, 0]
+	card = empty_card
+	for l in range(NUM_OF_COLS - 1, 1, -1):
+		curr_card = row[l]
+		prev_card = row[l - 1]
+		if curr_card == empty_card and prev_card != empty_card:
+			card = prev_card
+	return card
+
 def set_up_decks(cards, deck):
 	NUM_OF_COLS = 5
 	NUM_OF_ROWS = 4
@@ -93,10 +104,12 @@ def place_card(player, card, deck):
 
 	row = deck[0]
 	row_index = 0
+	smallest_card = find_largest_cards_in_row(row)
 
 	# if card is smallest than any of the rows
-	print("card is smallest", is_larger_card(row[0], card))
-	if is_larger_card(row[0], card):
+	print("card is smallest", is_larger_card(smallest_card, card))
+	if is_larger_card(smallest_card, card):
+		print("here")
 		# choose a row to take all cards
 		# row_index = input("You've chosen a card that is smaller than any of the cards in the row. Please choose a row number (1 to 4) to take all cards in the row: ")
 		row_index = 1
@@ -113,7 +126,7 @@ def place_card(player, card, deck):
 
 
 	# if row is full:
-	if is_row_full(row):
+	elif is_row_full(row):
 		# take all cards in the row...
 		for c in row:
 			players[player].append(c)
@@ -131,6 +144,7 @@ def place_card(player, card, deck):
 			# find current last card in row
 			curr_small_card = curr_row[0]
 			curr_large_card = next_row[0]
+			print("initial large card:", curr_large_card, "initial small card:", curr_small_card)
 			for j in range(NUM_OF_COLS - 1, 1, -1):
 				curr_card = curr_row[j]
 				next_card = next_row[j]
@@ -179,19 +193,54 @@ def is_row_full(row):
 def is_larger_card(curr_card, compared_card):
 	return curr_card[0] > compared_card[0]
 
-cards = []
-deck = []
-cards = set_up_cards(cards)
-# print(cards)
-players, cards = distribute_cards(4, cards)
-# print(players)
-deck, cards = set_up_decks(cards, deck)
-print_deck(deck)
-print('---')
-print_players(players)
-print('---')
-# print(cards)
-for t in range(5): # reduce to 5 rows
+# random simulation
+# cards = []
+# deck = []
+# cards = set_up_cards(cards)
+# # print(cards)
+# players, cards = distribute_cards(4, cards)
+# # print(players)
+# deck, cards = set_up_decks(cards, deck)
+# print_deck(deck)
+# print('---')
+# print_players(players)
+# print('---')
+# # print(cards)
+# for t in range(5): # reduce to 5 rows
+# 	cards_to_place = []
+# 	for i in range(4):
+# 		print(f"Player {i + 1}'s turn")
+# 		cards = players[i+1]
+# 		# print(cards)
+# 		# brute force algo, selecting kartu paling parah
+# 		cards.sort(key = lambda x:x[0])
+# 		cards.sort(key = lambda x:x[1], reverse = True)
+# 		# print("sorted card:", cards)
+# 		card = cards[0]
+# 		print("chosen card:", card)
+# 		# card = input("Please type the card that you would like to place: ")
+# 		cards_to_place.append((card, i))
+# 	cards_to_place.sort(key = lambda x: x[0][0])
+# 	for c, p in cards_to_place:
+# 		players, deck = place_card(p + 1, c, deck)
+# 		print('---')
+# 		print_deck(deck)	
+# 	print('---')
+# 	print("end of turn")
+# 	print_deck(deck)
+# print('===')
+# print("final deck condition:")
+# print_deck(deck)
+# print("---")
+# print("final players condition:")
+# print_players(players)
+
+# print(find_largest_cards_in_row([[1,1],[2,2],[3,3],[0,0],[0,0]])) # sanity check, should be [3,3]
+
+players = {1: [[65, 2], [41, 1], [83, 1], [48, 1], [86, 1], [59, 1], [39, 1], [21, 1], [104, 1], [82, 1]], 2: [[67, 1], [29, 1], [27, 1], [91, 1], [100, 3], [46, 1], [58, 1], [33, 5], [12, 1], [13, 1]], 3: [[26, 1], [63, 1], [38, 1], [25, 2], [37, 1], [64, 1], [54, 1], [20, 3], [75, 2], [14, 1]], 4: [[51, 1], [89, 1], [55, 7], [6, 1], [73, 1], [30, 3], [77, 5], [45, 2], [36, 1], [56, 1]]}
+deck = [[[22, 5], [0, 0], [0, 0], [0, 0], [0, 0]], [[62, 1], [0, 0], [0, 0], [0, 0], [0, 0]], [[95, 2], [0, 0], [0, 0], [0, 0], [0, 0]], [[101, 1], [0, 0], [0, 0], [0, 0], [0, 0]]]
+
+for t in range(2): # reduce to 5 rows
 	cards_to_place = []
 	for i in range(4):
 		print(f"Player {i + 1}'s turn")
