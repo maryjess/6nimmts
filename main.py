@@ -156,10 +156,18 @@ def place_card(player, card, deck):
 			print("large card:", curr_large_card, "small card:", curr_small_card)
 			if is_larger_card(card, curr_small_card) and is_larger_card(curr_large_card, card):
 				# this is the current row
+				print("here jusseyo")
 				row = curr_row
 				row_index = i
 				print("card is between large and small card:", True)
 				break
+
+			# largest card case
+			elif is_larger_card(card, curr_large_card):
+				print("here!")
+				row = next_row
+				row_index = i + 1
+				print("card is largest:", True)
 
 		print("current row situation: ", row)
 		row = place_single_card(row, card)
@@ -237,8 +245,8 @@ def is_larger_card(curr_card, compared_card):
 
 # print(find_largest_cards_in_row([[1,1],[2,2],[3,3],[0,0],[0,0]])) # sanity check, should be [3,3]
 
-players = {1: [[65, 2], [41, 1], [83, 1], [48, 1], [86, 1], [59, 1], [39, 1], [21, 1], [104, 1], [82, 1]], 2: [[67, 1], [29, 1], [27, 1], [91, 1], [100, 3], [46, 1], [58, 1], [33, 5], [12, 1], [13, 1]], 3: [[26, 1], [63, 1], [38, 1], [25, 2], [37, 1], [64, 1], [54, 1], [20, 3], [75, 2], [14, 1]], 4: [[51, 1], [89, 1], [55, 7], [6, 1], [73, 1], [30, 3], [77, 5], [45, 2], [36, 1], [56, 1]]}
-deck = [[[22, 5], [0, 0], [0, 0], [0, 0], [0, 0]], [[62, 1], [0, 0], [0, 0], [0, 0], [0, 0]], [[95, 2], [0, 0], [0, 0], [0, 0], [0, 0]], [[101, 1], [0, 0], [0, 0], [0, 0], [0, 0]]]
+players = {1: [[28, 1], [61, 1], [81, 1], [34, 1], [24, 1], [22, 5], [10, 3], [91, 1], [18, 1], [17, 1]], 2: [[49, 1], [45, 2], [25, 2], [84, 1], [98, 1], [16, 1], [62, 1], [85, 2], [23, 1], [52, 1]], 3: [[70, 3], [100, 3], [87, 1], [48, 1], [19, 1], [89, 1], [59, 1], [104, 1], [64, 1], [46, 1]], 4: [[11, 5], [63, 1], [4, 1], [37, 1], [88, 5], [76, 1], [77, 5], [8, 1], [20, 3], [95, 2]]}
+deck = [[[6, 1], [0, 0], [0, 0], [0, 0], [0, 0]], [[36, 1], [0, 0], [0, 0], [0, 0], [0, 0]], [[66, 5], [0, 0], [0, 0], [0, 0], [0, 0]], [[86, 1], [0, 0], [0, 0], [0, 0], [0, 0]]]
 
 for t in range(2): # reduce to 5 rows
 	cards_to_place = []
