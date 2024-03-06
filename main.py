@@ -1,5 +1,5 @@
 from random import randint
-from exceptions import CardNotInHandException
+from exceptions import CardNotInHandException, CardParseError
 
 def print_deck(deck):
 	print("Current deck situation:")
@@ -49,7 +49,7 @@ def distribute_cards(num_of_players, cards):
 		j += 1
 		if j not in players:
 			players[j] = []
-		for k in range(10):
+		for _ in range(10):
 			index = randint(smallest_index, largest_index)
 			# print(smallest_index, largest_index)
 			curr_card = cards[index]
@@ -208,7 +208,6 @@ def determine_winners(players):
 	current_winner = None
 	winning_penalty = 0
 	for p, cards in players.items():
-		current_player = p
 		current_penalty = 0
 		for c in cards:
 			current_penalty += c[1]
@@ -217,8 +216,20 @@ def determine_winners(players):
 			current_winner = p
 	return f'The winner is Player {current_winner}! Congratulations.'
 
+def parse_card(card):
+	try:
+		card = list(card)
+		card = card[1:-1]
+		number, cattle = int(card[0]), int(card[-1])
+		return [number, cattle]
+	except ValueError:
+		raise CardParseError()
+
 def check_card_in_hand(card, current_deck):
-	return card in current_deck
+	condition = card in current_deck
+	if condition:
+		return condition
+	raise CardNotInHandException()
 
 def play_game():
 	try:
@@ -236,14 +247,14 @@ def simulate_debug():
 	win_condition = False
 	cards = []
 	# modify your card here
-	deck = [[[13, 1], [0, 0], [0, 0], [0, 0], [0, 0]],
-		[[14, 1], [0, 0], [0, 0], [0, 0], [0, 0]],
-		[[23, 1], [0, 0], [0, 0], [0, 0], [0, 0]],
-		[[87, 1], [0, 0], [0, 0], [0, 0], [0, 0]]]
+	deck = [[[11, 5], [12, 1], [33, 5], [36, 1], [45, 2]],
+		[[22, 5], [77, 5], [0, 0], [0, 0], [0, 0]],
+		[[88, 5], [90, 3], [94, 1], [0, 0], [0, 0]],
+		[[95, 2], [99, 5], [0, 0], [0, 0], [0, 0]]]
 	cards = set_up_cards(cards)
 	players, cards = distribute_cards(4, cards)
 	# modify your own cards
-	players[1] = [[57, 1], [32, 1], [91, 1], [40, 3], [26, 1], [70, 3], [76, 1], [93, 1], [67, 1], [81, 1]]
+	players[1] = [[32, 1], [96, 1], [45, 2], [23, 1], [17, 1], [56, 1], [3, 1], [85, 2]]
 	# deck, cards = set_up_decks(cards, deck)
 	# initial deck condition
 	print_deck(deck)
@@ -251,11 +262,11 @@ def simulate_debug():
 	print_players(players)
 
 	# 3 turns
-	for t in range(3):
+	for _ in range(3):
 		print("Here are your cards:", players[1])
 		cards_to_place = []
 		for i in range(4):
-			if len(players[i]) == 0: # winner, card is empty
+			if len(players[i + 1]) == 0: # winner, card is empty
 				print(f"Player {i + 1} wins! Congratulations.")
 				win_condition = True
 				break
@@ -269,7 +280,11 @@ def simulate_debug():
 				print("Please type the card that you would like to place")
 				card = input("(Type in format, [<number>, <cattle>]): ")
 				try:
+					card = parse_card(card)
+					# print("parsed card: ", card)
 					check_card_in_hand(card, cards)
+				except CardParseError:
+					card = input("The card format you've entered is invalid. Please enter the card again:")
 				except CardNotInHandException:
 					card = input("Error: The card you inputted is not in your hand! Please retype the card that you would like to place: ")
 			# brute force algo, selecting kartu paling parah
@@ -320,15 +335,13 @@ def simulate(difficulty):
 	deck, cards = set_up_decks(cards, deck)
 	# initial deck condition
 	print_deck(deck)
-	# initial player condition
-	# print_players(players)
 
 	# 10 turns
-	for t in range(10):
+	for _ in range(10):
 		print("Here are your cards:", players[1])
 		cards_to_place = []
 		for i in range(4):
-			if len(players[i]) == 0: # winner, card is empty
+			if len(players[i + 1]) == 0: # winner, card is empty
 				print(f"Player {i + 1} wins! Congratulations.")
 				win_condition = True
 				break
@@ -343,7 +356,10 @@ def simulate(difficulty):
 				print("Please type the card that you would like to place")
 				card = input("(Type in format, [<number>, <cattle>]): ")
 				try:
+					card = parse_card(card)
 					check_card_in_hand(card, cards)
+				except CardParseError:
+					card = input("The card format you've entered is invalid. Please enter the card again:")
 				except CardNotInHandException:
 					card = input("Error: The card you inputted is not in your hand! Please retype the card that you would like to place: ")
 			# brute force algo, selecting kartu paling parah
@@ -378,8 +394,6 @@ def simulate(difficulty):
 	print("final deck condition:")
 	print_deck(deck)
 	print("---")
-	# print("final players condition:")
-	# print_players(players)
 	print("calculating winner...")
 	print(determine_winners(players))
 	ask_play_again()
