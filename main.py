@@ -1,5 +1,5 @@
 from random import randint
-import exceptions
+from exceptions import CardNotInHandException
 
 def print_deck(deck):
 	print("Current deck situation:")
@@ -71,15 +71,14 @@ def find_largest_cards_in_row(row):
 	return card
 
 def set_up_decks(cards, deck):
-	NUM_OF_COLS = 5
 	NUM_OF_ROWS = 4
 	# setting up empty deck
-	deck = [make_new_row([0, 0]) for j in range(NUM_OF_ROWS)]
+	deck = [make_new_row([0, 0]) for _ in range(NUM_OF_ROWS)]
 
 	smallest_index = 0
 	largest_index = len(cards) - 1
 	initial_cards = []
-	for i in range(NUM_OF_ROWS):
+	for _ in range(NUM_OF_ROWS):
 		index = randint(smallest_index, largest_index)
 		curr_card = cards[index]
 		cards.pop(index)
@@ -234,6 +233,7 @@ def play_game():
 		exit()
 
 def simulate_debug():
+	win_condition = False
 	cards = []
 	# modify your card here
 	deck = [[[13, 1], [0, 0], [0, 0], [0, 0], [0, 0]],
@@ -255,6 +255,10 @@ def simulate_debug():
 		print("Here are your cards:", players[1])
 		cards_to_place = []
 		for i in range(4):
+			if len(players[i]) == 0: # winner, card is empty
+				print(f"Player {i + 1} wins! Congratulations.")
+				win_condition = True
+				break
 			if i == 0:
 				print("Your turn")
 			else:
@@ -281,6 +285,9 @@ def simulate_debug():
 				card = [int(card[0]), int(card[1])]
 				# print(card)
 			cards_to_place.append((card, i))
+		if win_condition:
+			break
+
 		cards_to_place.sort(key = lambda x: x[0][0])
 		for c, p in cards_to_place:
 			players, deck = place_card(players, p + 1, c, deck)
@@ -289,6 +296,9 @@ def simulate_debug():
 		print('---')
 		print("end of turn")
 		print_deck(deck)
+	if win_condition:
+		print("Thanks for playing!")
+		exit()
 	print('===')
 	print("final deck condition:")
 	print_deck(deck)
@@ -302,6 +312,7 @@ def simulate(difficulty):
 	if difficulty not in ['Easy', 'Normal']:
 		difficulty = input("The difficulty you've entered is invalid! Please either enter Easy or Normal: ")
 
+	win_condition = False
 	cards = []
 	deck = []
 	cards = set_up_cards(cards)
@@ -317,6 +328,11 @@ def simulate(difficulty):
 		print("Here are your cards:", players[1])
 		cards_to_place = []
 		for i in range(4):
+			if len(players[i]) == 0: # winner, card is empty
+				print(f"Player {i + 1} wins! Congratulations.")
+				win_condition = True
+				break
+
 			if i == 0:
 				print("Your turn")
 			else:
@@ -346,6 +362,8 @@ def simulate(difficulty):
 				card = [int(card[0]), int(card[1])]
 				# print(card)
 			cards_to_place.append((card, i))
+		if win_condition:
+			break
 		cards_to_place.sort(key = lambda x: x[0][0])
 		for c, p in cards_to_place:
 			players, deck = place_card(players, p + 1, c, deck)
@@ -354,6 +372,8 @@ def simulate(difficulty):
 		print('---')
 		print("end of turn")
 		print_deck(deck)
+	if win_condition:
+		ask_play_again()
 	print('===')
 	print("final deck condition:")
 	print_deck(deck)
@@ -362,11 +382,15 @@ def simulate(difficulty):
 	# print_players(players)
 	print("calculating winner...")
 	print(determine_winners(players))
+	ask_play_again()
+
+def ask_play_again():
 	play_again = input("Would you like to play again? Type Yes or No: ")
 	if play_again == "Yes":
 		difficulty = input("Which difficulty you would like to play? Type Easy or Normal: ")
 		simulate(difficulty)
 	else:
 		print("Thanks for playing! Hope to see you again.")
+		exit()
 
 play_game()
