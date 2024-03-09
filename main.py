@@ -63,11 +63,16 @@ def find_largest_cards_in_row(row):
 	NUM_OF_COLS = 5
 	empty_card = [0, 0]
 	card = empty_card
-	for l in range(NUM_OF_COLS - 1, 1, -1):
+	for l in range(NUM_OF_COLS - 1, 0, -1):
 		curr_card = row[l]
 		prev_card = row[l - 1]
+		print("index:", l)
+		print("curr card:", curr_card)
+		print("prev card:", prev_card)
 		if curr_card == empty_card and prev_card != empty_card:
+			print("true.")
 			card = prev_card
+			print("card:", card)
 	return card
 
 def set_up_decks(cards, deck):
@@ -105,10 +110,11 @@ def place_card(players, player, card, deck):
 	row_index = 0
 	smallest_card = find_largest_cards_in_row(row)
 
+	print("smallest card:", smallest_card)
 	# if card is smallest than any of the rows
-	# print("card is smallest", is_larger_card(smallest_card, card))
+	print("card is smallest", is_larger_card(smallest_card, card))
 	if is_larger_card(smallest_card, card):
-		# print("here")
+		print("here")
 		# choose a row to take all cards
 		
 		if player == 1: # yourself
@@ -247,14 +253,14 @@ def simulate_debug():
 	win_condition = False
 	cards = []
 	# modify your card here
-	deck = [[[11, 5], [12, 1], [33, 5], [36, 1], [45, 2]],
-		[[22, 5], [77, 5], [0, 0], [0, 0], [0, 0]],
-		[[88, 5], [90, 3], [94, 1], [0, 0], [0, 0]],
-		[[95, 2], [99, 5], [0, 0], [0, 0], [0, 0]]]
+	deck = [[[13, 1], [0, 0], [0, 0], [0, 0], [0, 0]],
+		[[14, 1], [0, 0], [0, 0], [0, 0], [0, 0]],
+		[[23, 1], [0, 0], [0, 0], [0, 0], [0, 0]],
+		[[87, 1], [0, 0], [0, 0], [0, 0], [0, 0]]]
 	cards = set_up_cards(cards)
 	players, cards = distribute_cards(4, cards)
 	# modify your own cards
-	players[1] = [[32, 1], [96, 1], [45, 2], [23, 1], [17, 1], [56, 1], [3, 1], [85, 2]]
+	players[1] = [[32, 1], [96, 1], [45, 2], [23, 1], [17, 1], [56, 1], [3, 1], [85, 2], [11, 5]]
 	# deck, cards = set_up_decks(cards, deck)
 	# initial deck condition
 	print_deck(deck)
