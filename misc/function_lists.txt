@@ -1,0 +1,29 @@
+6nimmts v0.1.0
+sets of functions
+
+= PRINTING FUNCTIONS =
+print_deck(deck)
+print_players(players)
+
+= INITIAL SETUP =
+set_up_cards(cards)
+distribute_cards(num_of_players, cards)
+find_largest_cards_in_row(row)
+set_up_decks(cards, deck)
+
+= GAMEPLAY =
+place_card(players, player, card, deck)
+place_single_card(row, card)
+play_game()
+simulate_debug()
+simulate(difficulty)
+ask_play_again()
+
+# = UTILS = (didalem gameplay)
+# basically the logic (?) should I separate utils and logic
+make_new_row(first_card)
+is_row_full(row)
+is_larger_card(curr_card, compared_card)
+determine_winners(players)
+parse_card(card)
+check_card_in_hand(card, current_deck)
