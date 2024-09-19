@@ -1,13 +1,27 @@
 ---
-name: Automated Cherry-Pick on Multiple OSs
+name: Python CI for Git
 on:
   - push
   - pull_request
 jobs:
-  cherry-pick-job:
-    runs-on: ubuntu-latest
+  build:
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.platform }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run tests on Linux
-        run: ./run-tests.sh
+      - name: Set up repository
+        uses: actions/checkout@main
+      - name: Set up repository
+        uses: actions/checkout@main
+        with:
+          ref: master
+      - name: Merge to master
+        run: git checkout --progress --force ${{ github.sha }}
+      - name: Run repository-wide tests
+        if: runner.os == 'Linux'
+        working-directory: ${{ github.workspace }}/.github
+        run: ./run-checks.sh
