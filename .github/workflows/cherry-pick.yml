@@ -1,12 +1,13 @@
+---
 name: Automated Cherry-Pick on Multiple OSs
-
-on: [push, pull_request]
-
+on:
+  - push
+  - pull_request
 jobs:
   cherry-pick-job:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Run tests on Linux
-      run: ./run-tests.sh
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run tests on Linux
+        run: ./run-tests.sh
