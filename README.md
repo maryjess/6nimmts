@@ -62,8 +62,6 @@ This fast-paced game combines strategic thinking with elements of luck, making i
 | `simulate()`                     | `difficulty`| Runs the game with a specific difficulty level.                                           |
 | `ask_play_again()`                         | `-`| Prompts the player to play again.                                                         |
 
-
-
 ## How to Play
 
 1. Clone the repository.
@@ -72,7 +70,3 @@ git clone https://github.com/maryjess/6nimmts.git
 ```
 2. Run the `main.py` file.
 3. Follow the on-screen instructions to play the game.
-
-## License
-
-This project is open-source and licensed under the MIT License.
