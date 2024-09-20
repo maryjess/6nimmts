@@ -31,13 +31,15 @@ This fast-paced game combines strategic thinking with elements of luck, making i
    - If a row is full, the player who places the next card takes the row.
 4. **Determine Winner:** The game ends after 10 turns. The player with the fewest penalty points (cattle heads) wins.
 
+# (Mini) Developer's Guide
+
 ## Project Structure
 
-- **Main Python Script:** `main.py`
+- Main Python Script is located at `main.py`
   - Implements the core game mechanics.
   - Contains the setup, distribution, gameplay, and winner determination logic.
 
-## Functions
+## Table of Functions
 
 | Function                                   | Input(s)                                       | Description                                                                               |
 |--------------------------------------------|------------------------------------------------|-------------------------------------------------------------------------------------------|
