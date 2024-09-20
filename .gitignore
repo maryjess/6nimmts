@@ -1,4 +1,8 @@
 # IDE configs
 .idea/
 
+# Caches
+**/__pycache__/
+
+# Local files
 misc/function_lists.py
