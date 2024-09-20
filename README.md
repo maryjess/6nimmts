@@ -1,8 +1,16 @@
-# 6 nimmt! Game
+# Welcome to 6nimmts! 🍻
+This project is a digital version of the card game **6 nimmt**! (also known as Take 6),
+designed by Wolfgang Kramer in 1994. 
 
-**6 nimmt**! (also known as Take 6) is a popular card game designed by Wolfgang Kramer in 1994. It's played with a custom deck of 104 cards numbered 1-104, each bearing 1, 2, 3, 5, or 7 cattle heads that represent penalty points. Players aim to collect the fewest cattle heads by strategically placing cards on four rows according to simple rules. When a player places the sixth card in a row, they must take that entire row, scoring all the penalty points on those cards. 
+### _If you didn't know about the game_
 
-The game ends when a player reaches 66 penalty points, and the player with the lowest total score wins. This fast-paced game combines strategic thinking with elements of luck, making it engaging for players of all ages
+The game starts with a deck of 104 cards numbered 1-104, 
+each bearing 1, 2, 3, 5, or 7 cattle heads that represent penalty points. 
+Players aim to collect the fewest cattle heads by strategically placing cards on four rows according to simple rules. 
+When a player places the sixth card in a row, they must take that entire row, scoring all the penalty points on those cards. 
+
+The game ends when a player reaches 66 penalty points, and the player with the lowest total score wins. 
+This fast-paced game combines strategic thinking with elements of luck, making it engaging for players of all ages.
 
 ## Table of Contents
 - [6 Nimmt! Game](#6-nimmt-game)
