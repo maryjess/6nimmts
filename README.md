@@ -12,32 +12,6 @@ When a player places the sixth card in a row, they must take that entire row, sc
 The game ends when a player reaches 66 penalty points, and the player with the lowest total score wins. 
 This fast-paced game combines strategic thinking with elements of luck, making it engaging for players of all ages.
 
-## Table of Contents
-- [6 Nimmt! Game](#6-nimmt-game)
-  - [Table of Contents](#table-of-contents)
-  - [Game Setup](#game-setup)
-  - [Gameplay](#gameplay)
-  - [Project Structure](#project-structure)
-  - [Functions](#functions)
-    - [print_deck(deck)](#print_deckdeck)
-    - [print_players(players)](#print_playersplayers)
-    - [set_up_cards(cards)](#set_up_cardscards)
-    - [distribute_cards(num_of_players, cards)](#distribute_cardsnum_of_players-cards)
-    - [find_largest_cards_in_row(row)](#find_largest_cards_in_rowrow)
-    - [set_up_decks(cards, deck)](#set_up_deckscards-deck)
-    - [place_card(players, player, card, deck)](#place_cardplayers-player-card-deck)
-    - [make_new_row(first_card)](#make_new_rowfirst_card)
-    - [place_single_card(row, card)](#place_single_cardrow-card)
-    - [is_row_full(row)](#is_row_fullrow)
-    - [is_larger_card(curr_card, compared_card)](#is_larger_cardcurr_card-compared_card)
-    - [determine_winners(players)](#determine_winnersplayers)
-    - [parse_card(card)](#parse_cardcard)
-    - [check_card_in_hand(card, current_deck)](#check_card_in_handcard-current_deck)
-    - [play_game()](#play_game)
-    - [simulate_debug()](#simulate_debug)
-    - [simulate(difficulty)](#simulatedifficulty)
-    - [ask_play_again()](#ask_play_again)
-
 ## Game Setup
 
 - **Cards:** There are 105 cards, each with a unique number and a certain number of cattle heads (which are penalty points you want to avoid).
