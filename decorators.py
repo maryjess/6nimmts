@@ -17,4 +17,5 @@ def input_validation(validation_function):
 def get_input(prompt):
     return input(prompt)
 
+# Example test case for age
 age = get_input("Enter your age: ")
