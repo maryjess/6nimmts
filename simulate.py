@@ -1,6 +1,7 @@
 from setup import set_up_cards, distribute_cards, set_up_decks
 from utils import place_card, parse_card, check_card_in_hand, ask_play_again
 from printing import print_deck, print_players
+from exceptions import InvalidRowNumberException, CardNotInHandException, CardParseError #exception has been imported
 from random import randint
 
 def simulate_debug():
@@ -68,12 +69,19 @@ def simulate_debug():
     ask_play_again()
 
 def simulate(difficulty):
-    if difficulty not in ['Easy', 'Normal']:
-        difficulty = input("The difficulty you've entered is invalid! Please either enter Easy or Normal: ")
+    #with the old code, if the user enter incorrect difficulty for the second time, 
+    #the code will continue to set up card with incorrect difficulty
+    correct_input = False
+    difficulty = 'NA'
+    while correct_input == False:
+        if difficulty not in ['Easy', 'Normal']:
+            difficulty = input("The difficulty you've entered is invalid! Please either enter Easy or Normal: ")
+        else:
+            correct_input = True
 
     win_condition = False
-    cards = []
-    deck = []
+    #do not create cards here, its better to cards=[] in setup.set_up_cards()
+    #do not create cards here, its better to deck=[] in setup.set_up_decks()
     cards = set_up_cards(cards)
     players, cards = distribute_cards(4, cards)
     deck, cards = set_up_decks(cards, deck)
@@ -140,6 +148,7 @@ def determine_winners(players):
             winning_penalty = current_penalty
             current_winner = p
 
+    #havent consider tie
     if current_winner is not None:
         return f'The winner is Player {current_winner}! Congratulations.'
     else:
