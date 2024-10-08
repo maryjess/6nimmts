@@ -1,56 +1,53 @@
 from random import randint
 
-def set_up_cards(cards):
-    num_of_cards = 105
-    for i in range(1, num_of_cards):
-        curr_card = [i]
-        if i % 5 == 0:
-            if i % 10 == 0:
-                curr_card.append(3)
-            elif i % 11 == 0:
-                curr_card.append(7)
-            else:
-                curr_card.append(2)
-        elif i % 11 == 0:
-            curr_card.append(5)
+#better to create a function that can select one card from the cards randomly
+def pick_from_cards(cards):
+    number_of_cards = len(cards)
+    card_index = randint(0, number_of_cards - 1)
+    card = cards.pop(card_index)
+    return [cards, card] #your function can return more than one value without using array
+
+def set_up_cards():
+    cards = []
+    for card_number in range(1, 104 + 1): #number of cards = 104
+    #below is the optimized version of set_up_cards
+        if card_number % 55 == 0:
+            cards.append([card_number, 7])
+        elif card_number % 11 == 0:
+            cards.append([card_number, 5])
+        elif card_number % 10 == 0:
+            cards.append([card_number, 3])
+        elif card_number % 5 == 0:
+            cards.append([card_number, 2])
         else:
-            curr_card.append(1)
-        cards.append(curr_card)
+            cards.append([card_number, 1])
     return cards
 
 def distribute_cards(num_of_players, cards):
+    #below is the optimized version of distribute_cards
     players = {}
-    smallest_index = 0
-    largest_index = len(cards) - 1
-    for j in range(num_of_players):
-        j += 1
-        if j not in players:
-            players[j] = []
+    for player in range(1, num_of_players + 1):
+        if player not in players:
+            players[player] = []
         for _ in range(10):
-            index = randint(smallest_index, largest_index)
-            curr_card = cards[index]
-            cards.pop(index)
-            largest_index -= 1
-            players[j].append(curr_card)
+            cards, card = pick_from_cards(cards)
+            players[player].append(card)
     return [players, cards]
 
 def set_up_decks(cards, deck):
+    #below is the optimized version of set_up_decks
     num_of_rows = 4
-    deck = [make_new_row([0, 0]) for _ in range(num_of_rows)]
-    smallest_index = 0
-    largest_index = len(cards) - 1
-    initial_cards = []
-    for _ in range(num_of_rows):
-        index = randint(smallest_index, largest_index)
-        curr_card = cards[index]
-        cards.pop(index)
-        largest_index -= 1
-        initial_cards.append(curr_card)
+    deck = [[[0, 0] for _ in range(5)] for _ in range(4)] 
+        # make a 4x5 array/matrix of [0, 0], the first card will be selected down below
+        #although, i suggest making the deck [[], [], [], []] for simpler code, 
+        #but the rest of the code in gameplay.py needed to be adjusted
+        #also, why does the initial_cards needed to be sorted?
+    initial_cards = [[0, 0] for _ in range(4)]
+    for index in range(num_of_rows):
+        cards, initial_cards[index] = pick_from_cards(cards)
     initial_cards.sort(key=lambda x: x[0])
-    for j, card in enumerate(initial_cards):
-        deck[j][0] = card
+    for index, card in enumerate(initial_cards):
+        deck[index][0] = card
     return [deck, cards]
 
-def make_new_row(first_card):
-    empty_card = [0, 0]
-    return [first_card, empty_card, empty_card, empty_card, empty_card]
+#the make_new_row can be erased and the functionality can be replaced by pick_from_cards(cards)

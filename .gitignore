@@ -2,7 +2,7 @@
 .idea/
 
 # Caches
-**/__pycache__/
+__pycache__/
 
 # Local files
 misc/function_lists.py
