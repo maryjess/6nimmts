@@ -1,11 +1,11 @@
-### decorators.py
+### test for decorators.py
 
-def input_validation(validation_func):
-	def decorator(func):
-		def wrapper(*args, **kwargs):
-			value = func(*args, **kwargs)
-			if validation_func(value):
-				return value
-			print("Invalid input, please try again.")
-		return wrapper
-	return decorator
+# Example use case, to be used in every input() calls
+@input_validation(lambda x: x.isdigit())
+def get_input(prompt):
+    return input(prompt)
+
+# Example test case for age
+age = get_input("Enter your age: ")
+
+# Would it be better to refactor use case and test case?
