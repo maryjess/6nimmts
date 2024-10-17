@@ -13,9 +13,9 @@ def input_validation(validation_function):
     return decorator
 
 # Example use case, to be used in every input() calls
-@input_validation(lambda x: x.isdigit())
-def get_input(prompt):
-    return input(prompt)
+# @input_validation(lambda x: x.isdigit())
+# def get_input(prompt):
+#     return input(prompt)
 
 # Example test case for age
-age = get_input("Enter your age: ")
+# age = get_input("Enter your age: ")
