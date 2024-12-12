@@ -1,8 +1,11 @@
-# IDE configs
-.idea/
-
-# Caches
+# Pycache files
 __pycache__/
 
-# Local files
-misc/function_lists.py
+# IDE configs
+.ide*
+
+# Local notes
+misc*
+
+# Test files (for now)
+test*
